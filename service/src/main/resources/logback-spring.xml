@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="PATTERN" value="%-12(%d{yyyy-MM-dd HH:mm:ss.SSS}) |-%-5level [%thread] %c [%L] -| %msg%n" />
+    <property name="PROD_FILE_PATH" value="./log"/>
+
+    <springProfile name="dev">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${PATTERN}</pattern>
+            </encoder>
+        </appender>
+
+        <root level="info">
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+
+    <springProfile name="prod">
+
+        <appender name="CONSOLE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${PROD_FILE_PATH}/console.info.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${PROD_FILE_PATH}/console.info.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <MaxHistory>30</MaxHistory>
+            </rollingPolicy>
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>${PATTERN}</pattern>
+            </layout>
+        </appender>
+
+        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${PROD_FILE_PATH}//LogInterceptor.info.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${PROD_FILE_PATH}//LogInterceptor.info.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <MaxHistory>30</MaxHistory>
+            </rollingPolicy>
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>%-12(%d{yyyy-MM-dd HH:mm:ss.SSS}) |-%-5level [%thread] %c [%L] -| %msg%n</pattern>
+            </layout>
+        </appender>
+
+        <root level="info">
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+
+</configuration>
